@@ -72,6 +72,7 @@ metadata:
   labels:
     app: istio-ingressgateway
     istio: ingressgateway
+    
     release: istio-system-istio
 spec:
   selector:
@@ -87,6 +88,7 @@ spec:
       labels:
         app: istio-ingressgateway
         istio: ingressgateway
+        
         heritage: Tiller
         release: istio
         chart: gateways
@@ -96,7 +98,7 @@ spec:
       serviceAccountName: istio-ingressgateway-service-account
       containers:
         - name: istio-proxy
-          image: "gcr.io/istio-testing/proxyv2:latest"
+          image: "gcr.io/istio-testing/proxyv2:1.5-alpha.b4300ec6c855522b57d7fbc1f874abc88d851160"
           imagePullPolicy: Always
           ports:
             - containerPort: 15020
@@ -202,6 +204,14 @@ spec:
                 fieldPath: metadata.namespace
           - name: ISTIO_META_ROUTER_MODE
             value: sni-dnat
+          
+          - name: ISTIO_METAJSON_LABELS
+            value: |
+              {"app":"istio-ingressgateway","istio":"ingressgateway"}
+          - name: ISTIO_META_CLUSTER_ID
+            value: "Kubernetes"
+          - name: SDS_ENABLED
+            value: "false"
           volumeMounts:
           
           - name: istio-certs

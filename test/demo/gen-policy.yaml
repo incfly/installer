@@ -155,7 +155,7 @@ spec:
                 - s390x      
       containers:
       - name: mixer
-        image: "gcr.io/istio-testing/mixer:latest"
+        image: "gcr.io/istio-testing/mixer:1.5-alpha.b4300ec6c855522b57d7fbc1f874abc88d851160"
         imagePullPolicy: Always
         ports:
         - containerPort: 9091
@@ -177,8 +177,6 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: metadata.namespace
-        - name: GODEBUG
-          value: "gctrace=1"
         resources:
           requests:
             cpu: 10m
@@ -200,7 +198,7 @@ spec:
           initialDelaySeconds: 5
           periodSeconds: 5
       - name: istio-proxy
-        image: "gcr.io/istio-testing/proxyv2:latest"
+        image: "gcr.io/istio-testing/proxyv2:1.5-alpha.b4300ec6c855522b57d7fbc1f874abc88d851160"
         imagePullPolicy: Always
         ports:
         - containerPort: 15004
@@ -233,6 +231,8 @@ spec:
             fieldRef:
               apiVersion: v1
               fieldPath: status.podIP
+        - name: SDS_ENABLED
+          value: "false"
         resources:
           limits:
             cpu: 2000m
